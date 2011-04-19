@@ -1,0 +1,55 @@
+# shorelines.map
+
+LAYER
+    TYPE POLYGON
+    STATUS DEFAULT
+    GROUP "default"
+    NAME "land"
+    PROJECTION
+        "init=epsg:900913"
+    END
+    MINSCALEDENOM 5000000
+    DATA "../data/shoreline_300"
+    CLASS
+        STYLE
+            COLOR "#EDEBE6"
+            OUTLINECOLOR "#EDEBE6"
+        END
+    END
+END
+
+LAYER
+    TYPE POLYGON
+    STATUS DEFAULT
+    GROUP "default"
+    NAME "land"
+    PROJECTION
+        "init=epsg:900913"
+    END
+    MAXSCALEDENOM 5000000
+    DATA "../data/processed_p"
+    CLASS
+        STYLE
+            COLOR "#EDEBE6"
+            OUTLINECOLOR "#EDEBE6"
+        END
+    END
+END
+
+LAYER
+   TYPE LINE
+   STATUS DEFAULT
+   GROUP "default"
+   NAME "borders"
+   PROJECTION
+       "init=epsg:4326"
+   END
+   MINSCALEDENOM 5000000
+   DATA "../data/10m_admin_0_boundary_lines_land"
+    CLASS
+        STYLE
+            WIDTH 0.5
+            COLOR "#EDEBE6"
+        END
+    END
+END

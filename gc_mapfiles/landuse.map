@@ -1,0 +1,193 @@
+# landuse.map
+
+LAYER
+    TYPE POLYGON
+    STATUS DEFAULT
+    PROJECTION
+        "init=epsg:900913"
+    END
+    NAME "landuse_layer1"
+    GROUP "default"
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "host=localhost dbname=planet0304 user=randre"
+    DATA "way from (select way,osm_id ,landuse, name from planet_osm_polygon where landuse is not null) as foo using unique osm_id using srid=900913"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    CLASSITEM "landuse"
+    MAXSCALEDENOM 1000010
+    CLASS
+        EXPRESSION ('[landuse]'='industrial' or '[landuse]'='commercial' or '[landuse]'='airport' or '[landuse]'='brownfield' or '[landuse]'='military' or '[landuse]'='railway')
+        STYLE
+            COLOR "#EBE5D9"
+        END
+        
+    END
+    CLASS
+        EXPRESSION ('[landuse]'='residential')
+        STYLE
+            COLOR "#F6F1E6"
+        END
+    END
+END
+
+LAYER
+    TYPE POLYGON
+    STATUS DEFAULT
+    PROJECTION
+        "init=epsg:900913"
+    END
+    GROUP "default"
+    NAME "landuse_layer2"
+    CONNECTIONTYPE postgis
+    CONNECTION "host=localhost dbname=planet0304 user=randre"
+    DATA "way from (select way,osm_id,leisure,landuse,name from planet_osm_polygon where leisure='park' or leisure='golf_course' or landuse='recreation_ground' or landuse='cemetery') as foo using unique osm_id using srid=900913"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    MAXSCALEDENOM 500000
+ CLASS
+        EXPRESSION ('[landuse]'='cemetery')
+        STYLE
+            COLOR "#EBE5D9"
+        END
+        
+ END
+ CLASS
+        STYLE
+            COLOR "#DCDCB4"
+        END
+        
+    END
+END
+
+LAYER
+    STATUS DEFAULT
+    PROJECTION
+        "init=epsg:900913"
+    END
+    GROUP "default"
+    NAME "landuse_layer3"
+    TYPE POLYGON
+    CONNECTIONTYPE postgis
+    CONNECTION "host=localhost dbname=planet0304 user=randre"
+    DATA "way from (select way,osm_id,amenity,aeroway,name from planet_osm_polygon where amenity is not null or aeroway='apron') as foo using unique osm_id using srid=900913"
+    CLASSITEM "amenity"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    MAXSCALEDENOM 110000
+    CLASS
+        EXPRESSION "hospital"
+        STYLE
+            COLOR "#E6C8C3"
+        END
+         
+    END
+    CLASS
+        EXPRESSION ("[amenity]"="parking" or "[aeroway]"="apron")
+        STYLE
+            COLOR "#EBE5D9"
+        END
+    END
+    CLASS
+        EXPRESSION ("[amenity]"="school" or "[amenity]"="college" or "[amenity]"="university" )
+        STYLE
+            COLOR "#DED1AB"
+        END
+        
+    END
+END
+
+LAYER
+    TYPE POLYGON
+    STATUS DEFAULT
+    PROJECTION
+        "init=epsg:900913"
+    END
+    NAME "landuse_layer4"
+    GROUP "default"
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "host=localhost dbname=planet0304 user=randre"
+    DATA "way from (select way,osm_id,planet_osm_polygon.natural,landuse,highway,name from planet_osm_polygon where landuse is not null or planet_osm_polygon.natural='wood' or highway='pedestrian') as foo using unique osm_id using srid=900913"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    CLASSITEM "landuse"
+    MAXSCALEDENOM 5000010
+    CLASS
+        EXPRESSION ('[natural]'='wood' or '[landuse]'="forest")
+        STYLE
+            COLOR "#DCDCB4"
+            OUTLINECOLOR "#DCDCB4"
+            OUTLINEWIDTH 0.3
+        END
+        
+    END
+    CLASS
+        EXPRESSION ('[landuse]'='grass' or '[landuse]'='farm' or '[landuse]'='greenfield' or '[landuse]'='allotments' or '[landuse]'='meadow' or '[landuse]'='field')
+        STYLE
+            COLOR "#DADEAD"
+            OUTLINECOLOR "#DADEAD"
+            OUTLINEWIDTH 0.3
+        END
+    END
+  CLASS
+        EXPRESSION ('[highway]'='pedestrian')
+        STYLE
+            COLOR "#FAFAF5"
+        END
+        
+    END
+END
+
+LAYER
+    TYPE POLYGON
+    STATUS DEFAULT
+    PROJECTION
+        "init=epsg:900913"
+    END
+    NAME "landuse_layer5"
+    GROUP "default"
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "host=localhost dbname=planet0304 user=randre"
+    DATA "way from (select way,osm_id,planet_osm_polygon.natural,name from planet_osm_polygon where planet_osm_polygon.natural='water' or landuse='basin' or landuse='reservoir' or waterway='riverbank') as foo using unique osm_id using srid=900913"
+    MAXSCALEDENOM 50000010
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    CLASS
+        STYLE
+            COLOR "#B3C6D4"
+        END
+        
+    END
+END
+
+LAYER
+    TYPE LINE
+    STATUS DEFAULT
+    NAME "landuse_layer6"
+    GROUP "default"
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "host=localhost dbname=planet0304 user=randre"
+    DATA 'way from (select way,waterway,osm_id from planet_osm_line where waterway is not null) as foo using unique osm_id using srid=900913'
+    CLASSITEM "waterway"
+    SIZEUNITS meters
+    MAXSCALEDENOM 1500000
+    CLASS
+        EXPRESSION "river"
+        STYLE
+            COLOR "#B3C6D4"
+            WIDTH 30
+            MINWIDTH 0.5
+        END
+    END
+    CLASS
+        MAXSCALEDENOM 105000
+        EXPRESSION "stream"
+        STYLE
+            COLOR "#B3C6D4"
+            WIDTH 5
+            MINWIDTH 0.5
+        END
+    END
+    CLASS
+        EXPRESSION "canal"
+        STYLE
+            COLOR "#B3C6D4"
+            WIDTH 10
+            MINWIDTH 0.5
+        END
+    END
+END
